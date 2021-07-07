@@ -176,6 +176,12 @@ class UKMETReader:
                        c = storms[storm]['pressure'], cmap = cmap,
                        vmin = 930, vmax = 1020, label = label, s = 150,
                        marker = markers[i], transform = ccrs.PlateCarree(), zorder = 2)
+        
+        #set plot extent based on storm points
+        #this probably doesn't handle the dateline or prime meridian well
+        lons = [lon for storm in storms for lon in storms[storm]['lon']]
+        lats = [lat for storm in storms for lat in storms[storm]['lat']]
+        ax.set_extent([np.min(lons)-5, np.max(lons)+5, np.min(lats)-5, np.max(lats)+5])
 
         ax.legend(fontsize = 12, framealpha = 0.25, loc = 'upper right')
         leg = ax.get_legend()
@@ -197,6 +203,7 @@ class UKMETReader:
             edgecolor='gray', facecolor='gray'))
         ax.set_aspect('auto')
 
+        #manually set extent. This should probably be changed to something else
         ax.set_title('UKMET TC Guidance ' +
                      ' '.join(self.text[4].split()[4:6]), size = 15, loc = 'center')
 
