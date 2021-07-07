@@ -142,9 +142,7 @@ class UKMETReader:
         
         fig = Figure(figsize = (12, 8))
         ax = fig.add_subplot(111, projection = ccrs.PlateCarree())
-        #ax = plt.axes(projection = ccrs.PlateCarree())
         ax.stock_img()
-        #ax.background_img(name = 'BM', resolution = 'high')
         gl = ax.gridlines(draw_labels = True)
         gl.xlocator = mticker.FixedLocator(range(-180, 180, 10))
         gl.ylocator = mticker.FixedLocator(range(-90, 90, 10))
@@ -152,11 +150,7 @@ class UKMETReader:
         gl.ylabels_right = False
         ax.coastlines()
 
-        #ax.set_extent([-100, -80, 15, 35])
         shpfilename = shpreader.natural_earth(resolution = '110m', category = 'cultural', name='admin_0_countries')
-        #us_shapes = list(shpreader.Reader('shapefiles/gadm36_USA_1.shp').geometries())
-        #ax.add_geometries(us_shapes, ccrs.PlateCarree(), edgecolor='gray',
-        #          facecolor='none')
         cmap = plt.get_cmap('gist_ncar_r', 18)
 
         i = -1
@@ -183,21 +177,15 @@ class UKMETReader:
                        vmin = 930, vmax = 1020, label = label, s = 150,
                        marker = markers[i], transform = ccrs.PlateCarree(), zorder = 2)
 
-        #box = ax.get_position()
-        #ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
-        ax.legend(#bbox_to_anchor = (1, 1),
-            fontsize = 12, framealpha = 0.25, loc = 'upper right')
+        ax.legend(fontsize = 12, framealpha = 0.25, loc = 'upper right')
         leg = ax.get_legend()
         for handle in leg.legendHandles:
             handle.set_color('black')
 
-        #divider = make_axes_locatable(plt.gca())
-        #cax = divider.append_axes("right", "5%", pad = "1%")
         sm = plt.cm.ScalarMappable(cmap = cmap, norm = plt.Normalize(930, 1020))
         sm._A = []
         cbar = plt.colorbar(sm, ax = ax, orientation = 'vertical', pad = 0.00,
                             use_gridspec = True)
-                            #fraction = 0.046)
 
         labels = np.arange(930, 1020, 5)
         loc = labels
@@ -209,15 +197,9 @@ class UKMETReader:
             edgecolor='gray', facecolor='gray'))
         ax.set_aspect('auto')
 
-        #ax.set_title('Will Downs', size = 10, loc = 'right')
         ax.set_title('UKMET TC Guidance ' +
                      ' '.join(self.text[4].split()[4:6]), size = 15, loc = 'center')
 
-        #ax.set_title('UKMET TC data courtesy of the Met Office', loc = 'left', size = 8) #wrap = True)
-
-        #ax.annotate('UKMET TC data courtesy of the Met Office via http://tgftp.nws.noaa.gov/data/raw/wt/wtnt82.egrr..txt', xy = (0, 0), xytext = (0.0, 0.0),
-        #            size = 8, textcoords = 'figure fraction')
-        
         #plt.tight_layout()
         #plt.show()
         pdf = PdfPages('UKMET.pdf')
